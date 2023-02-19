@@ -1,0 +1,18 @@
+{
+  "name": "test-pm2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev nodemon index,js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"cross-env NODE_ENV=production pm2 start pm2.config.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.20"
+  }
+}
