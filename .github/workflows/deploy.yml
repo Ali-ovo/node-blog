@@ -19,25 +19,25 @@ jobs:
 
       - name: set id_rsa # 设置 id_rsa
         run: |
-        mkdir -p ~/.ssh/
-        echo "${{secrets.MY_ID_RSA}}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan 106.15.41.62 >> ~/.ssh/known_hosts
+          mkdir -p ~/.ssh/
+          echo "${{secrets.MY_ID_RSA}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 106.15.41.62 >> ~/.ssh/known_hosts
 
       - name: deploy # 部署
         run: |
-        ssh root@106.15.41.62 "
-        # 进入项目目录
-        cd /root/myblog/server
-        git checkout .
-        git checkout main
-        git pull
+          ssh root@106.15.41.62 "
+          # 进入项目目录
+          cd /root/myblog/server
+          git checkout .
+          git checkout main
+          git pull
 
-        # 重启服务
-        npm install
-        npm run build
-        pm2 restart myblog
-        "
+          # 重启服务
+          npm install
+          npm run build
+          pm2 restart myblog
+          "
 
       - name: delete id_rsa # 删除 id_rsa
         run: rm -rf ~/.ssh/id_rsa
