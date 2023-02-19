@@ -20,7 +20,7 @@ jobs:
       - name: set id_rsq # 设置 id_rsq
         run: |
         mkdir -p ~/.ssh/
-        echo "${{ secrets.ID_RSA }}" > ~/.ssh/id_rsa
+        echo "${{secrets.MY_ID_RSA}}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan 106.15.41.62 >> ~/.ssh/known_hosts
 
