@@ -10,7 +10,7 @@ on:
       - 'bin/*'
       - 'package.json'
 
- jobs:
+jobs:
   deploy:
     runs-on: ubuntu-latest
 
