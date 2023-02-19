@@ -1,0 +1,33 @@
+name: deploy myblog
+
+on: 
+  push:
+    branches: 
+     - "main" # 针对 main 分支
+
+     paths:
+     - ".github/workflows/*"
+     - "nodeBlog/**"
+     - "nodeBlog/*/package.json"
+     - "nodeBlog/*/src/**"
+
+ jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2 #第三方的 action
+
+      - name: crate a folder # 创建文件夹
+        run: mkdir test-folder
+        
+      - name: create a file # 创建文件
+        run: |
+         cd test-folder
+         touch a.txt
+         echo "hello world" > a.txt
+         cat a.txt
+
+      - name: delete a file # 删除文件
+        run: rm -rf a.txt
+
