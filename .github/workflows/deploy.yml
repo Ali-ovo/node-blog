@@ -2,14 +2,13 @@ name: deploy myblog
 
 on: 
   push:
-    branches: 
-     - "main" # 针对 main 分支
-
-     paths:
-     - ".github/workflows/*"
-     - "nodeBlog/**"
-     - "nodeBlog/*/package.json"
-     - "nodeBlog/*/src/**"
+    branches:
+      - 'main' # 针对 main 分支
+    paths:
+      - '.github/workflows/*'
+      - 'src/**'
+      - 'bin/*'
+      - 'package.json'
 
  jobs:
   deploy:
