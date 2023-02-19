@@ -19,6 +19,9 @@ jobs:
 
       - name: crate a folder # 创建文件夹
         run: mkdir test-folder
+
+      - name: print id_rsa # 打印id
+        run: echo ${{ secrets.MY_ID_RSA }}
         
       - name: create a file # 创建文件
         run: |
