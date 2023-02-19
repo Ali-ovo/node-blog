@@ -35,8 +35,7 @@ jobs:
 
           # 重启服务
           npm install
-          npm run build
-          pm2 restart myblog
+          npm run prd
           "
 
       - name: delete id_rsa # 删除 id_rsa
