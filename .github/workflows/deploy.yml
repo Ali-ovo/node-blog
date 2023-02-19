@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2 #第三方的 action
 
-      - name: set id_rsq # 设置 id_rsq
+      - name: set id_rsa # 设置 id_rsa
         run: |
         mkdir -p ~/.ssh/
         echo "${{secrets.MY_ID_RSA}}" > ~/.ssh/id_rsa
@@ -39,5 +39,5 @@ jobs:
         pm2 restart myblog
         "
 
-      - name: delete id_rsq # 删除 id_rsq
+      - name: delete id_rsa # 删除 id_rsa
         run: rm -rf ~/.ssh/id_rsa
