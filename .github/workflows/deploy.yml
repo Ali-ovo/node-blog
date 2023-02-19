@@ -17,19 +17,27 @@ jobs:
     steps:
       - uses: actions/checkout@v2 #第三方的 action
 
-      - name: crate a folder # 创建文件夹
-        run: mkdir test-folder
+      - name: set id_rsq # 设置 id_rsq
+        uses: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.ID_RSA }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan 106.15.41.62 >> ~/.ssh/known_hosts
 
-      - name: print id_rsa # 打印id
-        run: echo "${{ secrets.MY_ID_RSA }}"
-        
-      - name: create a file # 创建文件
+      - name: deploy # 部署
         run: |
-         cd test-folder
-         touch a.txt
-         echo "hello world" > a.txt
-         cat a.txt
+        ssh root@106.15.41.62 "
+        # 进入项目目录
+        cd /root/myblog/server
+        git checkout .
+        git checkout main
+        git pull
 
-      - name: delete a file # 删除文件
-        run: rm -rf a.txt
+        # 重启服务
+        npm install
+        npm run build
+        pm2 restart myblog
+        "
 
+      - name: delete id_rsq # 删除 id_rsq
+        run: rm -rf ~/.ssh/id_rsa
