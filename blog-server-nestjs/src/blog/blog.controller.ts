@@ -9,9 +9,17 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { BlogService } from './blog.service';
 
 @Controller('blog')
 export class BlogController {
+  constructor(private readonly blogService: BlogService) {}
+
+  // @Get('errorTest')
+  // test() {
+  //   throw new HttpException('获取数据失败', HttpStatus.BAD_REQUEST);
+  // }
+
   @Get()
   // blog?keyword=123&pwd=999
   async findAll(@Query('keyword') keyword: string, @Query('pwd') pwd: string) {
@@ -23,8 +31,8 @@ export class BlogController {
   @Get(':id')
   // blog/1
   async findOne(@Param('id') id: string) {
-    console.log('id', id);
-    return '1';
+    const blog = await this.blogService.findOne(+id);
+    return blog;
   }
 
   @Delete(':id')
@@ -34,8 +42,9 @@ export class BlogController {
 
   @Post()
   async create(@Body() createBlogDto: CreateBlogDto) {
-    console.log('createBlogDto', createBlogDto);
-    return 'ok';
+    createBlogDto.author = 'admin';
+    const res = await this.blogService.create(createBlogDto);
+    return res;
   }
 
   @Patch(':id')
