@@ -4,12 +4,16 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { BlogService } from './blog.service';
+import { AuthGuard } from 'src/user/user.guard';
 
 @Controller('blog')
 export class BlogController {
@@ -22,35 +26,37 @@ export class BlogController {
 
   @Get()
   // blog?keyword=123&pwd=999
-  async findAll(@Query('keyword') keyword: string, @Query('pwd') pwd: string) {
-    console.log('keyword', keyword);
-    console.log('pwd', pwd);
-    return ['1', '2', '3'];
+  async findAll(
+    @Query('keyword') keyword: string,
+    @Query('author') author: string,
+  ) {
+    return this.blogService.findAll(author, keyword);
   }
 
   @Get(':id')
-  // blog/1
-  async findOne(@Param('id') id: string) {
-    const blog = await this.blogService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const blog = await this.blogService.findOne(id);
     return blog;
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return { id };
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return this.blogService.remove(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createBlogDto: CreateBlogDto) {
-    createBlogDto.author = 'admin';
+  async create(@Body() createBlogDto: CreateBlogDto, @Request() req) {
+    createBlogDto.author = req.user.username;
     const res = await this.blogService.create(createBlogDto);
     return res;
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateBlogDto: CreateBlogDto) {
-    console.log('id', id);
-    console.log('updateBlogDto', updateBlogDto);
-    return 'ok';
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateBlogDto: CreateBlogDto,
+  ) {
+    return this.blogService.update(id, updateBlogDto);
   }
 }
